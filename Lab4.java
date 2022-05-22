@@ -1,119 +1,66 @@
+package com.company;
+
 import java.util.Random;
 import java.util.Scanner;
 
 class laba4{
-    public void Func1(){
+
+    public void Z1(){
         Scanner a = new Scanner(System.in);
-        int lengh = 0;
-        try{
-            System.out.print("Введіть розмір массиву:");
-            lengh = a.nextInt();
-        }
-        catch (Exception ex){
-            System.out.println("Невірне значення");
-            Func1();
-        }
-        int[] mass = new int[lengh];
-        for(int i = 0; i < lengh; i++){
-            try {
-                System.out.print("\tВведіть " + (i + 1) + " елемент массиву: ");
-                mass[i] = a.nextInt();
-            }
-            catch (Exception ex){
-                System.out.println("Невірне значення");
-                i--;
-                continue;
+        int[][] mtrx = new int[][]{{3,-2,4,9},{0,3,10,3},{5,-4,-6,0}};
+        for(int i = 0; i < mtrx.length; i++){
+            if(i != 0)System.out.println();
+            for(int j = 0; j < mtrx[0].length; j++){
+                System.out.print("\t" + mtrx[i][j]);
             }
         }
-        System.out.println("Різниця між першим і останнім елементом: " + Math.abs(mass[0] - mass[lengh-1]));
+        System.out.println();
+        System.out.println("\tМаксимальне число: " + Math.max(mtrx[2][3],mtrx[1][1]));
     }
-    public void Func2(){
+
+    public void Z2(){
         Scanner a = new Scanner(System.in);
-        int lengh = 0;
-        int type;
-        try{
-            System.out.print("Введіть розмір массиву: ");
-            lengh = a.nextInt();
-        }
-        catch (Exception ex){
-            System.out.println("Невірне значення");
-            Func2();
-        }
-        int[] mass = new int[lengh];
-        while(true){
-            System.out.print("Спосіб введення(1. Рандом, 2. Вручну): ");
-            try{
-                type = a.nextInt();
-                if(type < 1 || type > 2){
-                    System.out.println("Невірне значення");
-                    continue;
-                }
-            }
-            catch (Exception ex){
-                System.out.println("Невірне значення");
-                continue;
-            }
-            break;
-        }
-        switch (type){
-            case(1):
-                Random r = new Random();
-                for(int i = 0; i < lengh; i++){
-                    mass[i] = r.nextInt(200) - 100;
-                }
-                for(int i = 0; i < lengh; i++){
-                    System.out.println(mass[i]);
-                }
-                break;
-            case(2):
-                for(int i = 0; i < lengh; i++){
-                    try {
-                        System.out.print("\tВведіть " + (i + 1) + " елемент массиву: ");
-                        mass[i] = a.nextInt();
-                    }
-                    catch (Exception ex){
-                        System.out.print("\tНевірне значення");
-                        i--;
-                        continue;
-                    }
-                }
-                for(int i = 0; i < lengh; i++){
-                    System.out.println(mass[i]);
-                }
-                break;
-        }
-        int max = mass[0];
-        for(int i = 0; i < lengh; i++){
-            if(Math.abs(mass[i]) > Math.abs(max)){
-                max = mass[i];
+        Random r = new Random();
+        int n,m;
+        System.out.print("\tВведіть кількість рядків: ");
+        n = a.nextInt();
+        System.out.print("\tВведіть кількість стовбців: ");
+        m = a.nextInt();
+        int[][] mtrx = new int[n][m];
+        for(int i = 0; i < mtrx.length; i++){
+            for(int j = 0; j < mtrx[0].length; j++){
+                mtrx[i][j] = r.nextInt(200) - 100;
             }
         }
-        System.out.println("Максимальний модуль в массиві: " + Math.abs(max));
-        int pos = -1;
-        for(int i = 0; i < lengh; i++){
-            if (mass[i] == 0) {
-                pos = i;
+        for(int i = 0; i < mtrx.length; i++){
+            if(i != 0)System.out.println();
+            for(int j = 0; j < mtrx[0].length; j++){
+                System.out.print("\t" + mtrx[i][j]);
             }
         }
-        if(pos == -1){
-            System.out.println("Нульового елементу нема");
+        System.out.println();
+        if(mtrx.length != mtrx[0].length){
+            System.out.println("Матриця не є ортономованою");
+            return;
         }
-        else{
-            int sum = 0;
-            for(int i = pos; i < lengh; i++){
-                sum += mass[i];
+        for(int i = 0; i < mtrx.length; i++){
+            for(int j = 0; j < mtrx[0].length; j++){
+                if(mtrx[i][j] != mtrx[j][i]){
+                    System.out.println("Матриця не є ортономованою");
+                    return;
+                }
             }
-            System.out.println("Сумма: " + sum);
         }
+        System.out.println("Матриця є ортономованою");
     }
 }
 public class Main {
 
     public static void main(String[] args) {
-        laba4 laba = new laba4();
-        System.out.println("1 Завдання: ");
-        laba.Func1();
-        System.out.println("2 Завдання: ");
-        laba.Func2();
+	    laba4 laba = new laba4();
+        System.out.println("1 Завдання:");
+        laba.Z1();
+        System.out.println("2 Завдання:");
+        laba.Z2();
     }
 }
