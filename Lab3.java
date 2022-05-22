@@ -1,66 +1,119 @@
+import java.util.Random;
 import java.util.Scanner;
-public class Main {
-    static void Func1()
-    {
-        int x = 0;
-        int y = 0;
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Введіть x");
-            x = scanner.nextInt();
-            System.out.println("Введіть y");
-            y = scanner.nextInt();
-            if(x-y==0)
-            {
-                throw new Exception("Ділення на нуль неможливе,введіть данні заново");
-            }
-            if(x-y<0)
-            {
-                throw new Exception("Корінь з від'ємного числа не вичисляється");
-            }
-            System.out.println((Math.pow(x,2) + Math.pow(y,2))/Math.sqrt(x-y));
+
+class laba4{
+    public void Func1(){
+        Scanner a = new Scanner(System.in);
+        int lengh = 0;
+        try{
+            System.out.print("Введіть розмір массиву:");
+            lengh = a.nextInt();
         }
-        catch (Exception ex)
-        {
-            System.out.println(ex.toString());
+        catch (Exception ex){
+            System.out.println("Невірне значення");
             Func1();
         }
-    }
-    static double Func2()
-    {
-        int sum = 0;
-        for(int i=1;i<10;i++) {
-            if (i % 2 == 0) {
-                sum = sum + i;
+        int[] mass = new int[lengh];
+        for(int i = 0; i < lengh; i++){
+            try {
+                System.out.print("\tВведіть " + (i + 1) + " елемент массиву: ");
+                mass[i] = a.nextInt();
+            }
+            catch (Exception ex){
+                System.out.println("Невірне значення");
+                i--;
+                continue;
             }
         }
-        Math.pow(sum,2);
-        return sum;
+        System.out.println("Різниця між першим і останнім елементом: " + Math.abs(mass[0] - mass[lengh-1]));
     }
-    static void Func3()
-    {
-        int x = 0;
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Введіть x");
-            x = scanner.nextInt();
-            double sum = 1;
-            for (double i = 1; i <= 5; i++) {
-                for (double j = 1; j <= i; j++) {
-                    sum = sum * (i + Math.pow(x, j));
+    public void Func2(){
+        Scanner a = new Scanner(System.in);
+        int lengh = 0;
+        int type;
+        try{
+            System.out.print("Введіть розмір массиву: ");
+            lengh = a.nextInt();
+        }
+        catch (Exception ex){
+            System.out.println("Невірне значення");
+            Func2();
+        }
+        int[] mass = new int[lengh];
+        while(true){
+            System.out.print("Спосіб введення(1. Рандом, 2. Вручну): ");
+            try{
+                type = a.nextInt();
+                if(type < 1 || type > 2){
+                    System.out.println("Невірне значення");
+                    continue;
                 }
             }
-            System.out.println("Результат функції:" + sum);
+            catch (Exception ex){
+                System.out.println("Невірне значення");
+                continue;
+            }
+            break;
         }
-        catch (Exception ex)
-        {
-            System.out.println(ex.toString());
-            Func3();
+        switch (type){
+            case(1):
+                Random r = new Random();
+                for(int i = 0; i < lengh; i++){
+                    mass[i] = r.nextInt(200) - 100;
+                }
+                for(int i = 0; i < lengh; i++){
+                    System.out.println(mass[i]);
+                }
+                break;
+            case(2):
+                for(int i = 0; i < lengh; i++){
+                    try {
+                        System.out.print("\tВведіть " + (i + 1) + " елемент массиву: ");
+                        mass[i] = a.nextInt();
+                    }
+                    catch (Exception ex){
+                        System.out.print("\tНевірне значення");
+                        i--;
+                        continue;
+                    }
+                }
+                for(int i = 0; i < lengh; i++){
+                    System.out.println(mass[i]);
+                }
+                break;
+        }
+        int max = mass[0];
+        for(int i = 0; i < lengh; i++){
+            if(Math.abs(mass[i]) > Math.abs(max)){
+                max = mass[i];
+            }
+        }
+        System.out.println("Максимальний модуль в массиві: " + Math.abs(max));
+        int pos = -1;
+        for(int i = 0; i < lengh; i++){
+            if (mass[i] == 0) {
+                pos = i;
+            }
+        }
+        if(pos == -1){
+            System.out.println("Нульового елементу нема");
+        }
+        else{
+            int sum = 0;
+            for(int i = pos; i < lengh; i++){
+                sum += mass[i];
+            }
+            System.out.println("Сумма: " + sum);
         }
     }
+}
+public class Main {
 
-    public static void main(String[] args)
-    {
-       Func3();
+    public static void main(String[] args) {
+        laba4 laba = new laba4();
+        System.out.println("1 Завдання: ");
+        laba.Func1();
+        System.out.println("2 Завдання: ");
+        laba.Func2();
     }
-} 
+}
