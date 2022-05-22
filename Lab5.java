@@ -1,64 +1,120 @@
-import java.util.Random;
+import java.io. *;
+import java.util.Arrays;
 import java.util.Scanner;
 
-class laba4{
+class Lab5 {
 
-    public void Func1(){
+    public void Z1(){
         Scanner a = new Scanner(System.in);
-        int[][] mtrx = new int[][]{{3,-2,4,9},{0,3,10,3},{5,-4,-6,0}};
-        for(int i = 0; i < mtrx.length; i++){
-            if(i != 0)System.out.println();
-            for(int j = 0; j < mtrx[0].length; j++){
-                System.out.print("\t" + mtrx[i][j]);
-            }
-        }
-        System.out.println();
-        System.out.println("\tМаксимальне число: " + Math.max(mtrx[2][3],mtrx[1][1]));
-    }
-
-    public void Func2(){
-        Scanner a = new Scanner(System.in);
-        Random r = new Random();
-        int n,m;
-        System.out.print("\tВведіть кількість рядків: ");
-        n = a.nextInt();
-        System.out.print("\tВведіть кількість стовбців: ");
-        m = a.nextInt();
-        int[][] mtrx = new int[n][m];
-        for(int i = 0; i < mtrx.length; i++){
-            for(int j = 0; j < mtrx[0].length; j++){
-                mtrx[i][j] = r.nextInt(200) - 100;
-            }
-        }
-        for(int i = 0; i < mtrx.length; i++){
-            if(i != 0)System.out.println();
-            for(int j = 0; j < mtrx[0].length; j++){
-                System.out.print("\t" + mtrx[i][j]);
-            }
-        }
-        System.out.println();
-        if(mtrx.length != mtrx[0].length){
-            System.out.println("Матриця не є ортономованою");
+        String sentence;
+        String[] words;
+        System.out.print("Введіть речення: ");
+        sentence = a.nextLine();
+        words = sentence.split(" ");
+        if(words.length <= 1){
+            System.out.println("Кількість слів має бути не менше 2");
+            Z1();
             return;
         }
-        for(int i = 0; i < mtrx.length; i++){
-            for(int j = 0; j < mtrx[0].length; j++){
-                if(mtrx[i][j] != mtrx[j][i]){
-                    System.out.println("Матриця не є ортономованою");
-                    return;
+        System.out.println("Кількість слів: " + words.length);
+        for(int i = 0; i < words.length; i++){
+            char[] word = words[i].toCharArray();
+            int c = 0;
+            for(char w : word){
+                if(contains(w, new char[]{'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'})){
+                    c++;
                 }
             }
+            if(c%2 != 0){
+                words[i] = null;
+            }
         }
-        System.out.println("Матриця є ортономованою");
-    }
-}
-public class Main {
+        System.out.print("Після видалення слів з непарною кількістю голосних: ");
+        for(int i = 0; i < words.length; i++){
+            if(words[i] == null){
+                continue;
+            }
+            System.out.print(words[i] + " ");
+        }
+        System.out.println();
 
-    public static void main(String[] args) {
-        laba4 laba = new laba4();
-        System.out.println("1 Завдання:");
-        laba.Func1();
-        System.out.println("2 Завдання:");
-        laba.Func2();
+        words = sentence.split(" ");
+        for(int i = 0; i < words.length; i++){
+            if(words[i].equals(new StringBuilder(words[i]).reverse().toString())){
+                words[i] = null;
+            }
+        }
+        System.out.print("Після видалення слів паліндромів: ");
+        for(int i = 0; i < words.length; i++){
+            if(words[i] == null){
+                continue;
+            }
+            System.out.print(words[i] + " ");
+        }
+        System.out.println();
+    }
+    private boolean contains(char a, char[] word){
+        for (char c : word) {
+            if (a == c) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void Z2(){
+        Scanner a = new Scanner(System.in);
+        String path = "C:/Java/lab5.txt";
+        try(FileReader reader = new FileReader(path))
+        {
+            char[] text = new char[256];
+            int c;
+            while((c = reader.read(text))>0){
+
+                if(c < 256){
+                    text = Arrays.copyOf(text, c);
+                }
+                System.out.print(text);
+            }
+            char tmp = 0;
+            tmp = text[0];
+            text[0] = text[3];
+            text[3] = tmp;
+            FileWriter writer = new FileWriter("NewFile.txt", false);
+            writer.write(text);
+            writer.flush();
+        }
+        catch (Exception ex){
+            System.out.println("Файла нема");
+            Z2();
+            return;
+        }
+    }
+
+    public static class Main {
+        public static void main(String[] args) {
+           Lab5 laba = new Lab5();
+           System.out.println("1 Завдання:");
+           /* 7. а) видаляє всі слова, що містять непарну кількість голосних літер; б) видаляє з тексту всі
+            слова-паліндроми*/
+           laba.Z1();
+           System.out.println("2 Завдання:");
+            /*7. Дано файл, елементами якого є окремі символи, що складають слово "олгаритм". Отримати
+            новий файл, в якому літери слова "алгоритм" будуть розміщені правильно.*/
+           laba.Z2();
+            float[] a = new float[6];
+            for (int i = 1; i <= 6; i++) {
+                System.out.print((float) i / 7 + "\t");
+                a[i - 1] = (float) i / 7;
+            }
+            System.out.println();
+            for (int i = 0; i < 6; i++) {
+                if (a[i] < 0.5f) {
+                    a[i] -= Math.abs((0.5f - a[i]) / 7);
+                } else {
+                    a[i] += Math.abs((0.5f - a[i]) / 7);
+                }
+                System.out.print(a[i] + "\t");
+            }
+        }
     }
 }
