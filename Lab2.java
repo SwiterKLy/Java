@@ -35,7 +35,23 @@ public class Main {
         Math.pow(sum, 2);
         return sum;
     }
-
+    static double Func4() {
+        double a = -Math.PI;
+        double b = Math.PI;
+        double dx = Math.PI/10;
+        double x = a;
+        while(x <= b)
+        {
+            double y = Math.cos(x) * Math.sin(x);
+            System.out.printf("\t|x|");
+            System.out.printf("\t%.2f",x);
+            System.out.printf("\t|y|");
+            System.out.printf("\t%.2f",y);
+            x = x + dx;
+            System.out.println();
+        }
+        return x;
+    }
     static void Func3() {
         int x = 0;
         try {
@@ -62,9 +78,9 @@ public class Main {
             try {
                 int input = 0;
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Введіть номер завдання 1-3");
+                System.out.println("Введіть номер завдання 1-4");
                 input = scanner.nextInt();
-                if (input >= 1 || input >= 3) {
+                {
                     switch (input) {
                         case (1): {
                             System.out.println("1 завдання:");
@@ -79,6 +95,11 @@ public class Main {
                         case (3): {
                             System.out.println("3 завдання:");
                             Func3();
+                            break;
+                        }
+                        case (4): {
+                            System.out.println("4 завдання:");
+                            Func4();
                             break;
                         }
                     }
