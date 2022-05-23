@@ -75,6 +75,7 @@ class Lab5 {
                 }
                 System.out.print(text);
             }
+            System.out.println();
             char tmp = 0;
             tmp = text[0];
             text[0] = text[3];
@@ -84,6 +85,36 @@ class Lab5 {
             writer.flush();
         }
         catch (Exception ex){
+            System.out.println("Файла нема");
+            Z2();
+            return;
+        }
+    }
+    public void Z3(){
+        Scanner a = new Scanner(System.in);
+        String path = "C:/Java/input.txt";
+        try(FileReader reader = new FileReader(path)) {
+            char[] text = new char[256];
+            int c;
+            while ((c = reader.read(text)) > 0) {
+
+                if (c < 256) {
+                    text = Arrays.copyOf(text, c);
+                }
+                System.out.print(text);
+            }
+            System.out.println();
+            c = 0;
+            for(char w : text){
+                if(contains(w, new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'})){
+                    c++;
+                }
+            }
+            FileWriter writer = new FileWriter("output.txt", false);
+            writer.write(Integer.toString(c).charAt(0));
+            writer.flush();
+        }
+         catch (Exception ex){
             System.out.println("Файла нема");
             Z2();
             return;
@@ -101,6 +132,10 @@ class Lab5 {
             /*7. Дано файл, елементами якого є окремі символи, що складають слово "олгаритм". Отримати
             новий файл, в якому літери слова "алгоритм" будуть розміщені правильно.*/
            laba.Z2();
+            System.out.println("3 Завдання:");
+            /*7. б) підраховує кількість чисел у тексті.*/
+            laba.Z3();
+
             float[] a = new float[6];
             for (int i = 1; i <= 6; i++) {
                 System.out.print((float) i / 7 + "\t");
