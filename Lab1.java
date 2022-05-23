@@ -18,11 +18,11 @@ public class Main {
         }
         double a = 0;
         if(b == 1)
-        a = 4*b-9*c;
+            a = 4*b-9*c;
         if(b == 2)
             try {
                 if(2 - b * c < 0)
-                throw new Exception("Корінь з від'ємного числа не вичисляється,введіть заново");
+                    throw new Exception("Корінь з від'ємного числа не вичисляється,введіть заново");
                 a = Math.sqrt(2 - b * c);
             }
             catch (Exception ex)
@@ -33,7 +33,7 @@ public class Main {
         if(b == 3)
             try {
                 if(c == 0)
-                throw new Exception("Ділення на 0 неможливе,введіть заново");
+                    throw new Exception("Ділення на 0 неможливе,введіть заново");
                 a = b / (c * c);
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ public class Main {
                 Func1v1();
             }
         if(b>3||b<1)
-        System.out.println("Nemozhlivo vichisliti rezul'tat,введіть zanowo");
+            System.out.println("Nemozhlivo vichisliti rezul'tat,введіть zanowo");
         if(b>3||b<1)
             Func1v1();
         return a;
@@ -231,10 +231,10 @@ public class Main {
     }
     public static void main(String[] args)
     {
-        //System.out.println(Func1v1());
-        //System.out.println(Func1v2());
-        //Func2();
-        //Func3();
-        System.out.println(Func4());
+        System.out.println(Func1v1());
+        System.out.println(Func1v2());
+        Func2();
+        Func3();
+        System.out.printf("%.2f",Func4());
     }
 }
