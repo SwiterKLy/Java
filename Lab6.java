@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -66,23 +67,16 @@ class Student{
     public static void PrintAllSortedStudentInfo(){
         List<Student> arrayToSort = new ArrayList<>();
         arrayToSort.addAll(AllStudents);
+        Date d = new Date();
         List<Student> aa = new ArrayList<>();
         for(int i = 0; i < arrayToSort.size() - 1; i++){
             for(int j = 0; j < arrayToSort.size() - 1; j++){
-                if(dateValue(arrayToSort.get(i+1).birthDate) < dateValue(arrayToSort.get(i).birthDate)){
+                d = arrayToSort.get(i).birthDate;
+                if(d.compareTo(arrayToSort.get(i+1).birthDate) < 0){
                     Student tmp = arrayToSort.get(i+1);
                     arrayToSort.set(i+1, arrayToSort.get(i));
                     arrayToSort.set(i, tmp);
                 }
-            }
-        }
-        for(int i = 0; i < arrayToSort.size() - 1; i++){
-            if(arrayToSort.get(i).birthDate.getDay() == arrayToSort.get(i+1).birthDate.getDay() &&
-                    arrayToSort.get(i).birthDate.getMonth() == arrayToSort.get(i+1).birthDate.getMonth()){
-                aa.add(arrayToSort.get(i));
-                arrayToSort.remove(i);
-                aa.add(arrayToSort.get(i+1));
-                arrayToSort.remove(i+1);
             }
         }
         PrintAllStudentInfo(arrayToSort);
@@ -92,8 +86,8 @@ class Student{
     public static int dateValue(Date a){
         int c = 0;
         c += a.getDay();
-        c += a.getMonth();
-        c += a.getYear();
+        c += a.getMonth() * 30;
+        c += a.getYear() * 365;
         return c;
     }
 
@@ -180,18 +174,35 @@ class TimeTable implements Serializable{
         else System.out.println("\tФорма навчання: ДИСТАНЦІЙНА");
         System.out.println();
     }
-    public static void SortTabels(){
+    public static void SortTabels() {
         sorted.addAll(AllTimeTabled);
-        for(int i = 0; i < sorted.size()-1; i++){
-            for(int j = 0; j < sorted.size()-1; j++){
-                if(sorted.get(i).dayWeek > sorted.get(i+1).dayWeek){
+        boolean needIteration = true;
+        while (needIteration) {
+            needIteration = false;
+            System.out.println(sorted.size());
+            for (int i = 0; i < sorted.size() - 1; i++) {
+                if (sorted.get(i).dayWeek > sorted.get(i + 1).dayWeek) {
                     TimeTable tmp = sorted.get(i);
-                    sorted.set(i, sorted.get(i+1));
-                    sorted.set(i+1, tmp);
+                    sorted.set(i, sorted.get(i + 1));
+                    sorted.set(i + 1, tmp);
+                    needIteration = true;
                 }
             }
         }
+        TimeTable.OutputAllTimeTableInfo(sorted);
     }
+//        sorted.addAll(AllTimeTabled);
+//        for(int i = 0; i < sorted.size()-1; i++){
+//            for(int j = 0; j < sorted.size()-1; j++){
+//                if(sorted.get(i).dayWeek < sorted.get(i+1).dayWeek){
+//                    TimeTable tmp = sorted.get(i);
+//                    sorted.set(i, sorted.get(i+1));
+//                    sorted.set(i+1, tmp);
+//                }
+//            }
+//        }
+//
+//    }
     public static void SearchTabels(){
         String name;
         System.out.print("Введіть прізвище викладача: ");
@@ -209,14 +220,34 @@ class File_manager{
         path = "C:/Java";
     }
     public static <T>void WriteList(List<T> Tlist) throws IOException {
-        FileOutputStream writeData = new FileOutputStream(path + "/data.dat");
+        FileOutputStream writeData = new FileOutputStream(path + "/laba6-2.txt");
         ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
         writeStream.writeObject(Tlist);
         writeStream.flush();
         writeStream.close();
     }
     public static <T>List<T> ReadList() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(path + "/data.dat");
+        FileInputStream fis = new FileInputStream(path + "/laba6-2.txt");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        List<T> Tlist = (List<T>) ois.readObject();
+        ois.close();
+        return Tlist;
+    }
+}
+class File_manager1{
+    public static String path;
+    public static void SetPath(){
+        path = "C:/Java";
+    }
+    public static <T>void WriteList1(List<T> Tlist) throws IOException {
+        FileOutputStream writeData = new FileOutputStream(path + "/laba6-1.dat");
+        ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+        writeStream.writeObject(Tlist);
+        writeStream.flush();
+        writeStream.close();
+    }
+    public static <T>List<T> ReadList1() throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(path + "/laba6-1.dat");
         ObjectInputStream ois = new ObjectInputStream(fis);
         List<T> Tlist = (List<T>) ois.readObject();
         ois.close();
@@ -231,24 +262,26 @@ public class Lab6 {
         народження, місце народження. Дата народження задається у вигляді ДД:ММ:РР. Відсортувати записи за
         зростанням дат народження та вивести його на екран у формі таблиці. Якщо є студенти з однаковою датою
         народження (співпадають день та місяць), то вивести записи про них окремо в таблиці «двійнята».*/
-        Student e = new Student("e",new Date(2004,7,5),"e");
-        Student f = new Student("f",new Date(2004,6,6),"f");
-        Student j = new Student("j",new Date(2004,5,7),"j");
-        Student k = new Student("k",new Date(2004,4,8),"k");
-        Student a = new Student("a",new Date(2003,11,1),"a");
-        Student b = new Student("b",new Date(2003,11,1),"b");
-        Student c = new Student("c",new Date(2003,9,3),"c");
-        Student d = new Student("d",new Date(2003,8,4),"d");
-        Student m = new Student("m",new Date(2003,3,9),"m");
-        Student l = new Student("n",new Date(2003,2,10),"n");
-
+        {
+            Student e = new Student("Лучанко", new Date(2004 - 1900, 7 - 1, 5), "Звенигородка");
+            Student f = new Student("Яблонський", new Date(2004 - 1900, 6 - 1, 6), "Новоукраїнка");
+            Student j = new Student("Бабак", new Date(2004 - 1900, 5, 7 - 1), "Шпола");
+            Student k = new Student("Головінський", new Date(2004 - 1900, 4 - 1, 8), "Ватутіне");
+            Student a = new Student("Ластовецький", new Date(2003 - 1900, 4 - 1, 1), "Ізяслав");
+            Student b = new Student("Чехівська", new Date(2003 - 1900, 11 - 1, 1), "Свалява");
+            Student c = new Student("Воронько", new Date(2003 - 1900, 9 - 1, 3), "Городок");
+            Student d = new Student("Зварич", new Date(2003 - 1900, 8 - 1, 4), "Березань");
+            Student m = new Student("Многогрішна", new Date(2003 - 1900, 3 - 1, 9), "Городок");
+            Student l = new Student("Борушенко", new Date(2003 - 1900, 2 - 1, 10), "Новоукраїнка");
+        }
         while(i == 1) {
+            File_manager1.SetPath();
             System.out.println("1.Ввести нового студента");
             System.out.println("2.Вивести всіх студентів");
             System.out.println("3.Вивести всіх студентів(відсортовано за датою)");
             System.out.println("4.Вийти");
             System.out.print("Оберіть опцію: ");
-            int n = 4;
+            int n = 6;
             while(true) {
                 try {
                     n = new Scanner(System.in).nextInt();
@@ -272,6 +305,7 @@ public class Lab6 {
                     break;
                 case (4):
                     return;
+
             }
         } // 1 завдання
         File_manager.SetPath();
@@ -292,16 +326,18 @@ public class Lab6 {
             – сортування за різними полями (поле Параметр сортування).
             Меню програми реалізувати по натисненню на певні клавіші: наприклад, Enter – вихід,
             п - пошук, р – редагування тощо*/
-           /* TimeTable e1 = new TimeTable(1,10,"e1","e2",true);
-            TimeTable f1 = new TimeTable(2,9,"f1","f2",false);
-            TimeTable j1 = new TimeTable(3,8,"j1","j2",true);
-            TimeTable k1 = new TimeTable(4,7,"k1","k2",false);
-            TimeTable a1 = new TimeTable(5,6,"a1","a2",true);
-            TimeTable b1 = new TimeTable(6,5,"b1","b2",false);
-            TimeTable c1 = new TimeTable(7,4,"c1","c2",false);
-            TimeTable d1 = new TimeTable(8,3,"d1","d2",false);
-            TimeTable m1 = new TimeTable(9,2,"m1","m2",true);
-            TimeTable l1 = new TimeTable(10,1,"l1","l2",false);*/
+          /*  {
+                TimeTable e1 = new TimeTable(1, 3, "Математика", "Петро Сарматович", true);
+                TimeTable f1 = new TimeTable(2, 2, "Фізика", "Устим Любомирович", false);
+                TimeTable j1 = new TimeTable(3, 1, "Хімія", "Нестор Іванович", true);
+                TimeTable k1 = new TimeTable(4, 7, "Трудове", "Гордята Драганович", false);
+                TimeTable a1 = new TimeTable(5, 6, "Англійська", "Адам Леонідович", true);
+                TimeTable b1 = new TimeTable(6, 5, "Укр.Мова", "Домна Полянівна", false);
+                TimeTable c1 = new TimeTable(7, 4, "Укр.Література", "Федосія Арсенівна", false);
+                TimeTable d1 = new TimeTable(8, 3, "Зарубіжна", "Шанетта Макарівна", false);
+                TimeTable m1 = new TimeTable(9, 2, "Хімія", "Юхимія Жданівна", true);
+                TimeTable l1 = new TimeTable(10, 1, "Трудове", "Чеслава Максимівна", false);
+            }*/
             System.out.println("1.Ввести запис у розклад");
             System.out.println("2.Вивести всі данні про розклад");
             System.out.println("3.Вивести відсортований массив записів");
@@ -330,7 +366,6 @@ public class Lab6 {
                     break;
                 case (3):
                     TimeTable.SortTabels();
-                    TimeTable.OutputAllTimeTableInfo(TimeTable.sorted);
                     break;
                 case (4):
                     TimeTable.SearchTabels();
