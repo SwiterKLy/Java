@@ -79,14 +79,14 @@ class File_manager{
         path = "C:/Java";
     }
     public static <T>void WriteList(List<T> Tlist) throws IOException {
-        FileOutputStream writeData = new FileOutputStream(path + "/data.dat");
+        FileOutputStream writeData = new FileOutputStream(path + "/lab7.txt");
         ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
         writeStream.writeObject(Tlist);
         writeStream.flush();
         writeStream.close();
     }
     public static <T>List<T> ReadList() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(path + "/data.dat");
+        FileInputStream fis = new FileInputStream(path + "/lab7.txt");
         ObjectInputStream ois = new ObjectInputStream(fis);
         List<T> Tlist = (List<T>) ois.readObject();
         ois.close();
@@ -115,11 +115,6 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Appointment a1 = new Appointment("a1", "a2",1, 5, 2);
-        Appointment b1 = new Appointment("b1", "b2",2, 4, 1);
-        Appointment c = new Appointment("c1", "c2",3, 3, 2);
-        Appointment d = new Appointment("d1", "d2",4, 2, 1);
-        Appointment e = new Appointment("e", "e2",5, 1, 3);
         File_manager.SetPath();
         System.out.println("1.Ввести новий прийом");
         System.out.println("2.Вивести всі прийоми");
