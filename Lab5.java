@@ -136,20 +136,7 @@ class Lab5 {
             /*7. б) підраховує кількість чисел у тексті.*/
             laba.Z3();
 
-            float[] a = new float[6];
-            for (int i = 1; i <= 6; i++) {
-                System.out.print((float) i / 7 + "\t");
-                a[i - 1] = (float) i / 7;
-            }
-            System.out.println();
-            for (int i = 0; i < 6; i++) {
-                if (a[i] < 0.5f) {
-                    a[i] -= Math.abs((0.5f - a[i]) / 7);
-                } else {
-                    a[i] += Math.abs((0.5f - a[i]) / 7);
-                }
-                System.out.print(a[i] + "\t");
-            }
+         
         }
     }
 }
